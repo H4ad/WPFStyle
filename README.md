@@ -1,5 +1,4 @@
 # WPFStyle
-Apenas um projeto no qual eu estava aprendendo sobre Style.
 Depois de algumas horas, criei esta página.
 
 ![alt text](https://github.com/H4ad/WPFStyle/blob/master/Screen.PNG)
