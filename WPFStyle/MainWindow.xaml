@@ -88,7 +88,18 @@
     <TabControl>
 
         <TabItem Header="Primeira Tab">
-            <Border Background="White"/>
+            <local:SlideMenu IsOpen="{Binding ElementName=Toggle, Path=IsChecked}">
+                <local:SlideMenu.Content>
+                    <Border Background="Green">
+                        <ToggleButton x:Name="Toggle" IsChecked="True" Width="50" Height="50"/>
+                    </Border>
+                </local:SlideMenu.Content>
+
+                <local:SlideMenu.MenuContent>
+                    <Border Background="Yellow"/>
+                </local:SlideMenu.MenuContent>
+
+            </local:SlideMenu>
         </TabItem>
         <TabItem Header="Segunda Tab">
             <Border Background="Aqua"/>

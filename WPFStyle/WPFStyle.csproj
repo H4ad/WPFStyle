@@ -54,8 +54,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Animation\FrameworkElementAnimations.cs" />
+    <Compile Include="Animation\PageAnimation.cs" />
+    <Compile Include="Animation\PageAnimations.cs" />
+    <Compile Include="Animation\StoryboardHelpers.cs" />
+    <Compile Include="Custom Controls\DataTypes\SlideDirection.cs" />
+    <Compile Include="Custom Controls\SlideMenu.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
+    <Compile Include="ValueConverters\BoolToVisibility.cs" />
+    <Compile Include="ValueConverters\InvertValueInt.cs" />
+    <Compile Include="ValueConverters\ThicknessMultiConverter.cs" />
     <Compile Include="ValueConverters\WindowStateToBoolean.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -89,6 +98,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Style\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\SlideMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -11,8 +11,10 @@
                 <ResourceDictionary Source="Style/Buttons.xaml"/>
                 <ResourceDictionary Source="Style/Border.xaml"/>
                 <ResourceDictionary Source="Style/TabControl.xaml"/>
+                <ResourceDictionary Source="Style/SlideMenu.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type local:SlideMenu}" BasedOn="{StaticResource SampleSlideMenu}"/>
             <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource CustomTabItem}"/>
             <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource CustomTabControl}"/>
         </ResourceDictionary>
