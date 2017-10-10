@@ -14,6 +14,14 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
+        <Viewbox Stretch="Uniform">
+            <Rectangle Height="25" Width="25" Margin="15">
+                <Rectangle.Fill>
+                    <VisualBrush Visual="{StaticResource appbar_database_white}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+        </Viewbox>
+
         <StackPanel Orientation="Horizontal"
                     Grid.Column="2">
 

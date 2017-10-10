@@ -86,15 +86,17 @@
     </WindowChrome.WindowChrome>
 
     <TabControl>
+
         <TabItem Header="Primeira Tab">
-            <Border Background="Green"/>
+            <Border Background="White"/>
         </TabItem>
         <TabItem Header="Segunda Tab">
             <Border Background="Aqua"/>
         </TabItem>
         <TabItem Header="Terceira Tab">
-            <Border Background="Yellow"/>
+        
         </TabItem>
+        
     </TabControl>
 
 </Window>
