@@ -1,33 +1,29 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WPFStyle">
-
-    <local:ThicknessMultiConverter x:Key="Converter"/>
-    <local:InvertValueInt x:Key="IntConverter"/>
-
+    
     <Style x:Key="SampleSlideMenu" TargetType="{x:Type local:SlideMenu}">
         <Setter Property="IsOpen" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate x:Name="ControlTemplate" TargetType="{x:Type local:SlideMenu}">
                     <Grid>
-                        <Border x:Name="ShadowBorder" Background="Black" Panel.ZIndex="1" Opacity="0.8"/>
+                        <Border x:Name="PART_ContentCover" Background="Black" Panel.ZIndex="1" Opacity="0" IsHitTestVisible="True" Focusable="False"/>
                         
                         <Border Background="{TemplateBinding Background}">
                             <ContentPresenter x:Name="PART_Content"
                                               ContentSource="Content" 
-                                              Margin="{TemplateBinding Padding}"
+                                              Margin="{TemplateBinding Margin}"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               Panel.ZIndex="0"/>
                         </Border>
 
-                        <Border x:Name="MenuBorder" 
+                        <Border x:Name="PART_MenuContent" 
                                 Background="{TemplateBinding Background}"
-                                Panel.ZIndex="2" Margin="{Binding ElementName=PART_MenuContent, Path=Width, Converter={local:ThicknessMultiConverter}, ConverterParameter=Invert}">
+                                Panel.ZIndex="2">
 
-                            <ContentPresenter x:Name="PART_MenuContent"
-                                              ContentSource="MenuContent" 
-                                              Margin="{TemplateBinding Padding}"
+                            <ContentPresenter ContentSource="MenuContent" 
+                                              Margin="{TemplateBinding Margin}"
                                               MinWidth="200"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                         </Border>
@@ -35,22 +31,35 @@
                     </Grid>
                     <ControlTemplate.Triggers>
 
-                        <EventTrigger RoutedEvent="Border.MouseLeftButtonDown" SourceName="ShadowBorder">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="(local:SlideMenu.IsOpen)">
-                                        <DiscreteBooleanKeyFrame Value="False"/>
-                                    </BooleanAnimationUsingKeyFrames>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        
+                        <Trigger Property="IsOpen" Value="False">
+                            <Setter TargetName="PART_ContentCover" Property="IsHitTestVisible" Value="False"/>
+                        </Trigger>
+
+                        <Trigger Property="IsOpen" Value="True">
+                            <Setter TargetName="PART_ContentCover" Property="IsHitTestVisible" Value="True"/>
+
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_ContentCover" Storyboard.TargetProperty="Opacity" From="0" To="0.8" Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="PART_ContentCover" Storyboard.TargetProperty="Opacity" From="0.8" To="0" Duration="0:0:0.3" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+
                         <Trigger Property="SlideDirection" Value="Left">
-                            <Setter TargetName="MenuBorder" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="PART_MenuContent" Property="HorizontalAlignment" Value="Left"/>
                         </Trigger>
 
                         <Trigger Property="SlideDirection" Value="Right">
-                            <Setter TargetName="MenuBorder" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="PART_MenuContent" Property="HorizontalAlignment" Value="Right"/>
                         </Trigger>
 
                     </ControlTemplate.Triggers>

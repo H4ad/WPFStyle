@@ -1,37 +1,24 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Animation;
 
 namespace WPFStyle
 {
+    [TemplatePart(Name = ShadowBorderPartName, Type = typeof(FrameworkElement))]
+
     /// <summary>
     /// É um controle personalizado que irá ser um menu que desliza para o lado
     /// </summary>
-    public class SlideMenu : Control
+    public class SlideMenu : ContentControl
     {
+        public const string ShadowBorderPartName = "PART_ContentCover";
+        public const float TimeOfSlide = 0.6f;
 
-        #region DependencyProperty Content
+        private FrameworkElement _shadowBorderElement;
 
-        /// <summary>
-        /// Registers a dependency property as backing store for the Content property
-        /// </summary>
-        public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(object), typeof(SlideMenu),
-            new FrameworkPropertyMetadata(null,
-                  FrameworkPropertyMetadataOptions.AffectsRender |
-                  FrameworkPropertyMetadataOptions.AffectsParentMeasure));
-
-        /// <summary>
-        /// Gets or sets the Content.
-        /// </summary>
-        /// <value>The Content.</value>
-        public object Content
-        {
-            get { return (object)GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
-        }
+        #region DependencyProperty
 
         /// <summary>
         /// Registra a Dependency Property do MenuContent
@@ -63,71 +50,115 @@ namespace WPFStyle
 
         // Using a DependencyProperty as the backing store for IsOpen.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsOpenProperty =
-            DependencyProperty.Register("IsOpen", typeof(bool), typeof(SlideMenu), new PropertyMetadata(false, IsOpenChangedCallback));
+            DependencyProperty.Register(nameof(IsOpen), typeof(bool), typeof(SlideMenu), new FrameworkPropertyMetadata(default(bool), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, IsOpenChangedCallback));
 
         /// <summary>
         /// Direções que o menu pode aparecer
         /// </summary>
-        public SlideDirections SlideDirection
+        public Directions SlideDirection
         {
-            get { return (SlideDirections)GetValue(SlideDirectionProperty); }
+            get { return (Directions)GetValue(SlideDirectionProperty); }
             set { SetValue(SlideDirectionProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SlideDirection.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SlideDirectionProperty =
-            DependencyProperty.Register("SlideDirection", typeof(SlideDirections), typeof(SlideMenu), new PropertyMetadata(SlideDirections.Left));
+            DependencyProperty.Register(nameof(SlideDirection), typeof(Directions), typeof(SlideMenu), new PropertyMetadata(Directions.Left, SlideDirectionChangedCallback));
 
         #endregion
 
         #region Callbacks Methods
-
-
+        
         private async static void IsOpenChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!(d is SlideMenu control))
                 return;
 
-            var seconds = 1;
-            // Create the storyboard
             var sb = new Storyboard();
+            var isOpen = (bool)e.NewValue;
 
-            var border = (control.FindName("ShadowBorder") as Border) ?? new Border();
-
-            if ((bool)e.NewValue == true)
+            switch (control.SlideDirection)
             {
-                control.MenuContent.Margin = new Thickness(control.MenuContent.ActualWidth * -1, 0, 0, 0);
-                // Add slide from right animation
-                sb.AddSlideFromLeft(seconds, control.MenuContent.ActualWidth);
+                case Directions.Left:
+                    if (isOpen)
+                        sb.AddSlideFromLeft(TimeOfSlide, control.MenuContent.ActualWidth);
+                    else
+                        sb.AddSlideToRight(TimeOfSlide, control.MenuContent.ActualWidth * -1);
+                    break;
 
-                control.MenuContent.Visibility = Visibility.Visible;
-                border.Visibility = Visibility.Visible;
-                // Add fade in animation
-                sb.AddFadeIn(seconds);
+                case Directions.Right:
+                    if (isOpen)
+                        sb.AddSlideFromRight(TimeOfSlide, control.MenuContent.ActualWidth);
+                    else
+                        sb.AddSlideToLeft(TimeOfSlide, control.MenuContent.ActualWidth * -1);
+                    break;
 
-            }
-            else
-            {
-                control.MenuContent.Margin = new Thickness(control.MenuContent.ActualWidth, 0, 0, 0);
-                // Add slide from right animation
-                sb.AddSlideToRight(seconds, control.MenuContent.ActualWidth * -1);
-
-                control.MenuContent.Visibility = Visibility.Visible;
-                border.Visibility = Visibility.Hidden;
-                // Add fade in animation
-                sb.AddFadeOut(seconds);
-                
+                default:
+                    break;
             }
 
-            // Start animating
+            control.MenuContent.Visibility = Visibility.Visible;
+            sb.AddFadeIn(TimeOfSlide);
+
+            // Começa a animação
             sb.Begin(control.MenuContent);
-            // Wait for it to finish
-            await Task.Delay((int)(seconds * 1000));
+
+            // Espera até a animimação terminar
+            await Task.Delay((int)(TimeOfSlide * 1000));
+        }
+
+        //TODO: Arrumar para que isso fique funcionando!
+        private static void SlideDirectionChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is SlideMenu control))
+                return;
+
+            if (control.MenuContent == null)
+                return;
+
+            var isOpen = control.IsOpen;
+            var direction = control.SlideDirection;
+            var margin = control.MenuContent.ActualWidth;
+
+            if (direction == Directions.Left)
+                control.MenuContent.Margin = new Thickness(margin * (isOpen ? 1 : -1), 0, 0, 0);
+            else if(direction == Directions.Right)
+                control.MenuContent.Margin = new Thickness(0, 0, margin * (isOpen ? 1 : -1), 0);
         }
         
+        #endregion
 
+        #region Override Methods
+
+        public override void OnApplyTemplate()
+        {
+
+            if (_shadowBorderElement != null)
+                _shadowBorderElement.MouseLeftButtonDown += ShadowBorderOnPreviewMouseLeftButtonUp;
+
+            base.OnApplyTemplate();
+
+            // Busca o elemento e retorna na variável para ser usada
+            _shadowBorderElement = GetTemplateChild(ShadowBorderPartName) as FrameworkElement;
+
+            if (_shadowBorderElement != null)
+                _shadowBorderElement.MouseLeftButtonDown += ShadowBorderOnPreviewMouseLeftButtonUp;
+        }
 
         #endregion
 
+        #region Event Methods
+
+        /// <summary>
+        /// Quando clicam no conteudo sombreado do menu, ativa este evento que fecha o menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="mouseButtonEventArgs"></param>
+        private void ShadowBorderOnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            SetCurrentValue(IsOpenProperty, false);
+        }
+
+        #endregion
     }
 }

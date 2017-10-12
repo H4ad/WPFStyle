@@ -8,11 +8,12 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WPFStyle</RootNamespace>
     <AssemblyName>WPFStyle</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,13 +59,11 @@
     <Compile Include="Animation\PageAnimation.cs" />
     <Compile Include="Animation\PageAnimations.cs" />
     <Compile Include="Animation\StoryboardHelpers.cs" />
-    <Compile Include="Custom Controls\DataTypes\SlideDirection.cs" />
+    <Compile Include="DataTypes\SlideDirection.cs" />
     <Compile Include="Custom Controls\SlideMenu.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\BoolToVisibility.cs" />
-    <Compile Include="ValueConverters\InvertValueInt.cs" />
-    <Compile Include="ValueConverters\ThicknessMultiConverter.cs" />
     <Compile Include="ValueConverters\WindowStateToBoolean.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
     <Page Include="MainWindow.xaml">
