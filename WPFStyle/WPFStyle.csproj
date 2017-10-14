@@ -61,11 +61,18 @@
     <Compile Include="Animation\StoryboardHelpers.cs" />
     <Compile Include="DataTypes\SlideDirection.cs" />
     <Compile Include="Custom Controls\SlideMenu.cs" />
+    <Compile Include="Dialog\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\BoolToVisibility.cs" />
     <Compile Include="ValueConverters\WindowStateToBoolean.cs" />
     <Compile Include="ViewModels\MenuViewModel.cs" />
+    <Page Include="Dialog\MessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

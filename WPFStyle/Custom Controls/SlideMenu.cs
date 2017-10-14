@@ -7,12 +7,14 @@ using System.Windows.Media.Animation;
 namespace WPFStyle
 {
     [TemplatePart(Name = ShadowBorderPartName, Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = MenuContentPartName, Type = typeof(FrameworkElement))]
 
     /// <summary>
     /// É um controle personalizado que irá ser um menu que desliza para o lado
     /// </summary>
     public class SlideMenu : ContentControl
     {
+        public const string MenuContentPartName = "PART_MenuContent";
         public const string ShadowBorderPartName = "PART_ContentCover";
         public const float TimeOfSlide = 0.6f;
 
@@ -75,6 +77,7 @@ namespace WPFStyle
                 return;
 
             var sb = new Storyboard();
+            
             var isOpen = (bool)e.NewValue;
 
             switch (control.SlideDirection)
@@ -98,6 +101,7 @@ namespace WPFStyle
             }
 
             control.MenuContent.Visibility = Visibility.Visible;
+
             sb.AddFadeIn(TimeOfSlide);
 
             // Começa a animação
@@ -107,23 +111,18 @@ namespace WPFStyle
             await Task.Delay((int)(TimeOfSlide * 1000));
         }
 
-        //TODO: Arrumar para que isso fique funcionando!
         private static void SlideDirectionChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!(d is SlideMenu control))
                 return;
 
-            if (control.MenuContent == null)
-                return;
+            control.SlideChanged(control.IsOpen);
+        }
 
-            var isOpen = control.IsOpen;
-            var direction = control.SlideDirection;
-            var margin = control.MenuContent.ActualWidth;
-
-            if (direction == Directions.Left)
-                control.MenuContent.Margin = new Thickness(margin * (isOpen ? 1 : -1), 0, 0, 0);
-            else if(direction == Directions.Right)
-                control.MenuContent.Margin = new Thickness(0, 0, margin * (isOpen ? 1 : -1), 0);
+        public void SlideChanged(bool isOpen)
+        {
+            SetCurrentValue(IsOpenProperty, !isOpen);
+            SetCurrentValue(IsOpenProperty, isOpen);
         }
         
         #endregion

@@ -35,8 +35,13 @@ namespace WPFStyle
             base.OnMouseLeftButtonDown(e);
 
             DragMove();
-        } 
+        }
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new MessageWindow(this, "Só testando", "Será que deu certo ?").Show();
+        }
     }
 }

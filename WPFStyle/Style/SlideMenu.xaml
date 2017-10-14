@@ -20,7 +20,9 @@
 
                         <Border x:Name="PART_MenuContent" 
                                 Background="{TemplateBinding Background}"
-                                Panel.ZIndex="2">
+                                Panel.ZIndex="2"
+                                Opacity="0"
+                                IsHitTestVisible="False">
 
                             <ContentPresenter ContentSource="MenuContent" 
                                               Margin="{TemplateBinding Margin}"
@@ -33,22 +35,28 @@
 
                         <Trigger Property="IsOpen" Value="False">
                             <Setter TargetName="PART_ContentCover" Property="IsHitTestVisible" Value="False"/>
+                            
+                            <Setter TargetName="PART_MenuContent" Property="IsHitTestVisible" Value="False"/>
                         </Trigger>
 
                         <Trigger Property="IsOpen" Value="True">
-                            <Setter TargetName="PART_ContentCover" Property="IsHitTestVisible" Value="True"/>
+                            <Setter TargetName="PART_MenuContent" Property="IsHitTestVisible" Value="True"/>
+                            <Setter TargetName="PART_MenuContent" Property="Opacity" Value="1"/>
 
+                            <Setter TargetName="PART_ContentCover" Property="IsHitTestVisible" Value="True"/>
+                            <Setter TargetName="PART_ContentCover" Property="Opacity" Value="0.8"/>
+                            
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="PART_ContentCover" Storyboard.TargetProperty="Opacity" From="0" To="0.8" Duration="0:0:0.3" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_ContentCover" Storyboard.TargetProperty="Opacity" From="0" To="0.8" Duration="0:0:0.4" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
                             <Trigger.ExitActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="PART_ContentCover" Storyboard.TargetProperty="Opacity" From="0.8" To="0" Duration="0:0:0.3" />
+                                        <DoubleAnimation Storyboard.TargetName="PART_ContentCover" Storyboard.TargetProperty="Opacity" From="0.8" To="0" Duration="0:0:0.4" />
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>

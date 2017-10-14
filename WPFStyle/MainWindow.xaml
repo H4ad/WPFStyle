@@ -9,7 +9,7 @@
         AllowsTransparency="True" Background="Transparent"
         Height="350" Width="525"
         MinHeight="400" MinWidth="900"
-        MouseLeftButtonDown="Page_MouseLeftButtonDown" ResizeMode="CanResize"
+        ResizeMode="CanResize"
         x:Name="Page" Title="MainWindow">
 
     <Window.Resources>
@@ -61,7 +61,8 @@
                                     <!-- Menu -->
                                     <local:Menu x:Name="Menu" 
                                                 Panel.ZIndex="1"
-                                                IsWindowMaximized="{Binding ElementName=Page, Path=WindowState, Converter={local:WindowStateToBoolean}}"/>
+                                                IsWindowMaximized="{Binding ElementName=Page, Path=WindowState, Converter={local:WindowStateToBoolean}}"
+                                                MouseLeftButtonDown="Page_MouseLeftButtonDown"/>
 
                                     <!-- Page Content -->
                                     <Border Grid.Row="1" ClipToBounds="True">
@@ -94,23 +95,28 @@
                 </local:SlideMenu.MenuContent>
 
                 <Border Background="Green">
-                    <ToggleButton x:Name="Toggle" Width="50" Height="50">
-                        <ToggleButton.Style>
-                            <Style TargetType="{x:Type ToggleButton}">
-                                <Style.Triggers>
+                    <StackPanel VerticalAlignment="Center">
+                        <ToggleButton x:Name="Toggle" Width="50" Height="50">
+                            <ToggleButton.Style>
+                                <Style TargetType="{x:Type ToggleButton}">
+                                    <Style.Triggers>
 
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="Content" Value="True"/>
-                                    </Trigger>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="Content" Value="True"/>
+                                        </Trigger>
 
-                                    <Trigger Property="IsChecked" Value="False">
-                                        <Setter Property="Content" Value="False"/>
-                                    </Trigger>
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="Content" Value="False"/>
+                                        </Trigger>
 
-                                </Style.Triggers>
-                            </Style>
-                        </ToggleButton.Style>
-                    </ToggleButton>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
+
+                        <Button Content="Show Dialog" Width="150" Height="50" Click="Button_Click"/>
+                    </StackPanel>
+                    
                 </Border>
             </local:SlideMenu>
         </TabItem>
