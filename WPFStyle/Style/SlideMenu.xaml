@@ -18,6 +18,23 @@
                                               Panel.ZIndex="0"/>
                         </Border>
 
+                        <Border x:Name="PART_ShadowMenu"
+                                HorizontalAlignment="{Binding ElementName=PART_MenuContent, Path=HorizontalAlignment}"
+                                IsHitTestVisible="{Binding ElementName=PART_ContentCover, Path=IsHitTestVisible}"
+                                Panel.ZIndex="3">
+
+                            <Border BorderBrush="White"
+                                    Margin="5 0 5 0"
+                                    BorderThickness="5 0 5 0"
+                                    Height="{Binding ElementName=PART_MenuContent, Path=ActualHeight}">
+                                
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="9" Direction="270"/>
+                                </Border.Effect>
+                            </Border>
+                        </Border>
+                        
+                        
                         <Border x:Name="PART_MenuContent" 
                                 Background="{TemplateBinding Background}"
                                 Panel.ZIndex="2"
@@ -64,6 +81,7 @@
 
                         <Trigger Property="SlideDirection" Value="Left">
                             <Setter TargetName="PART_MenuContent" Property="HorizontalAlignment" Value="Left"/>
+                            <Setter TargetName="PART_ShadowMenu" Property="BorderBrush" Value="0 0 5 0"/>
                         </Trigger>
 
                         <Trigger Property="SlideDirection" Value="Right">
