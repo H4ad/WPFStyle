@@ -8,6 +8,7 @@ namespace WPFStyle
 {
     [TemplatePart(Name = ShadowBorderPartName, Type = typeof(FrameworkElement))]
     [TemplatePart(Name = MenuContentPartName, Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = ShadowMenuContentPartName, Type = typeof(FrameworkElement))]
 
     /// <summary>
     /// É um controle personalizado que irá ser um menu que desliza para o lado
@@ -16,6 +17,7 @@ namespace WPFStyle
     {
         public const string MenuContentPartName = "PART_MenuContent";
         public const string ShadowBorderPartName = "PART_ContentCover";
+        public const string ShadowMenuContentPartName = "PART_ShadowMenuContent";
         public const float TimeOfSlide = 0.6f;
 
         private FrameworkElement _shadowBorderElement;
@@ -73,7 +75,9 @@ namespace WPFStyle
         
         private async static void IsOpenChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is SlideMenu control))
+            var control = d as SlideMenu;
+
+            if (control == null)
                 return;
 
             var sb = new Storyboard();
@@ -113,7 +117,8 @@ namespace WPFStyle
 
         private static void SlideDirectionChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is SlideMenu control))
+            var control = d as SlideMenu;
+            if(control == null)
                 return;
 
             control.SlideChanged(control.IsOpen);
